@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LaBestiaNet.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/")]
     public class UserController : ControllerBase
     {
         public IUserService service { get; }
