@@ -24,7 +24,8 @@ namespace LaBestiaNet.Services.UserService
         {
             try
             {
-               await context.Users.AddAsync(user);
+                await context.Users.AddAsync(user);
+                await context.SaveChangesAsync();
                 return new ServiceResponse<User>(true, user, "Done");
             }catch(Exception ex)
             {

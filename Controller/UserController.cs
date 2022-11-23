@@ -1,4 +1,5 @@
-﻿using LaBestiaNet.Models;
+﻿using LaBestiaNet.Dtos.User;
+using LaBestiaNet.Models;
 using LaBestiaNet.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
 namespace LaBestiaNet.Controller
@@ -17,18 +18,41 @@ namespace LaBestiaNet.Controller
 
         public async Task<ActionResult<ServiceResponse<List<User>>>> getAll()
         {
-            return Ok(await service.getUsers());
+            ServiceResponse<List<User>> res = await service.getUsers();
+            if (res.ok)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+            
         }
 
         [HttpPost("user/add")]
         public async Task<ActionResult<ServiceResponse<User>>> addUser(User user)
         {
-            return Ok( await service.addUser(user));
+            ServiceResponse<User> res = await service.addUser(user);
+            if (res.ok)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
         }
         [HttpPost("user/filter")]
-        public async Task<ActionResult<ServiceResponse<List<User>>>> filterUser(UserPreferences filter)
+        public async Task<ActionResult<ServiceResponse<List<GetUser>>>> filterUser(UserPreferences filter)
         {
-            return Ok(await service.getCompatibleUsers(filter));
+            ServiceResponse<List<GetUser>> res = await service.getCompatibleUsers(filter);
+            if (res.ok) {
+                return Ok(res); 
+            } else {
+                return BadRequest(res); 
+            }
+       
         }
     }
 }
