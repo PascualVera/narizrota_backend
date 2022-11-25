@@ -24,11 +24,11 @@ namespace LaBestiaNet.Controller
 
 
         [HttpPost("/auth/register")]
-        public async Task<ActionResult<ServiceResponse<User>>> Register(UserRegister registerUser)
+        public async Task<ActionResult<ServiceResponse<GetUser>>> Register(UserRegister registerUser)
         {   
 
             
-            ServiceResponse<User> res = await service.Register(registerUser);
+            ServiceResponse<GetUser> res = await service.Register(registerUser);
             if (res.ok)
             {
                 return Ok(res);

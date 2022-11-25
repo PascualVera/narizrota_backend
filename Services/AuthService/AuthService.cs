@@ -44,7 +44,7 @@ namespace LaBestiaNet.Services.AuthService
 
         }
 
-        public async Task<ServiceResponse<User>> Register(UserRegister userRegister)
+        public async Task<ServiceResponse<GetUser>> Register(UserRegister userRegister)
         {
             User user = mapper.Map<User>(userRegister);
 
@@ -58,16 +58,17 @@ namespace LaBestiaNet.Services.AuthService
                     user.PassSalt = passSalt;
                     await context.Users.AddAsync(user);
                     await context.SaveChangesAsync();
-                    return new ServiceResponse<User>(true, user, "User added");
+
+                    return new ServiceResponse<GetUser>(true, mapper.Map<GetUser>(user), "User added");
                 }
                 else
                 {
-                    return new ServiceResponse<User>(false, null, "Username already exist");
+                    return new ServiceResponse<GetUser>(false, null, "Username already exist");
                 }
             }
             catch (Exception ex)
             {
-                return new ServiceResponse<User>(false, null, ex.Message);
+                return new ServiceResponse<GetUser>(false, null, ex.Message);
             }
         }
 
