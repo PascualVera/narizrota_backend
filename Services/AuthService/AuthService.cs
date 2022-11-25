@@ -17,9 +17,30 @@ namespace LaBestiaNet.Services.AuthService
             this.context = context;
             this.mapper = mapper;
         }
-        public Task<ServiceResponse<string>> Login(string username, string password)
+
+
+        //Controller Services
+        public async Task<ServiceResponse<GetUser>> Login(string username, string password)
         {
-            throw new NotImplementedException();
+            try {
+                User user = await context.Users.FirstOrDefaultAsync(user => user.UserName.ToLower() == username.ToLower());
+                if(user == null)
+                {
+                    return new ServiceResponse<GetUser>(false, null, "user not found");
+                }
+                else if (!VerifyPasswordHash(password, user.PassHash, user.PassSalt))
+                {
+                    return new ServiceResponse<GetUser>(false, null, "password incorrect");
+                }
+                else
+                {
+                    GetUser loggeduser = mapper.Map<GetUser>(user);
+                    return new ServiceResponse<GetUser>(true, loggeduser, "login succesfully");
+                }
+            }
+            catch(Exception ex) {
+                return new ServiceResponse<GetUser>(false, null, ex.Message);
+            }
 
         }
 
@@ -50,6 +71,8 @@ namespace LaBestiaNet.Services.AuthService
             }
         }
 
+        //Encrypt and verification methods
+
         public async Task<bool> UserExist(string username)
         {
             return await context.Users.AnyAsync(user => user.UserName.ToLower() == username.ToLower());
@@ -65,5 +88,15 @@ namespace LaBestiaNet.Services.AuthService
             }
 
         }
+        private bool VerifyPasswordHash(string password, byte[] passHash, byte[] passSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passSalt))
+            {
+               byte[] computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                return computeHash.SequenceEqual(passHash);
+            }
+
+        }
+
     }
 }

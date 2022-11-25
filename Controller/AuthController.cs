@@ -38,8 +38,20 @@ namespace LaBestiaNet.Controller
                 return BadRequest(res);
             }
         }
-        
 
-        
+        [HttpPost("/auth/login")]
+        public async Task<ActionResult<ServiceResponse<GetUser>>> Login(UserLogin user)
+        {
+
+            ServiceResponse<GetUser> res = await service.Login(user.UserName, user.Password);
+            if (res.ok)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return BadRequest(res);
+            }
+        }
     }
 }
