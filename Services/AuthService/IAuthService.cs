@@ -7,6 +7,5 @@ namespace LaBestiaNet.Services.AuthService
     {
         Task<ServiceResponse<GetUser>> Register(UserRegister userRegister);
         Task<ServiceResponse<GetUser>> Login(string username, string password);
-        Task<bool> UserExist(string username);
     }
 }

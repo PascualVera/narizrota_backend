@@ -3,6 +3,7 @@ using LaBestiaNet.Data;
 using LaBestiaNet.Dtos.User;
 using LaBestiaNet.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace LaBestiaNet.Services.AuthService
 {
@@ -50,7 +51,7 @@ namespace LaBestiaNet.Services.AuthService
 
             try
             {
-                if (!await UserExist(userRegister.UserName))
+                if (!await UserExist(userRegister.UserName, userRegister.Email))
                 {
                     CreatePasswordHash(userRegister.Password, out byte[] passHash, out byte[] passSalt);
                    
@@ -63,7 +64,7 @@ namespace LaBestiaNet.Services.AuthService
                 }
                 else
                 {
-                    return new ServiceResponse<GetUser>(false, null, "Username already exist");
+                    return new ServiceResponse<GetUser>(false, null, "Username or email already exist");
                 }
             }
             catch (Exception ex)
@@ -74,15 +75,15 @@ namespace LaBestiaNet.Services.AuthService
 
         //Encrypt and verification methods
 
-        public async Task<bool> UserExist(string username)
+        public async Task<bool> UserExist(string username, string email)
         {
-            return await context.Users.AnyAsync(user => user.UserName.ToLower() == username.ToLower());
+            return await context.Users.AnyAsync(user => user.UserName.ToLower() == username.ToLower() || user.Email.ToLower()  == email);
 
         }
 
         private void CreatePasswordHash(string password, out byte[] passHash, out byte[] passSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (HMACSHA512 hmac = new HMACSHA512())
             {
                 passSalt = hmac.Key;
                 passHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
@@ -91,7 +92,7 @@ namespace LaBestiaNet.Services.AuthService
         }
         private bool VerifyPasswordHash(string password, byte[] passHash, byte[] passSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passSalt))
+            using (HMACSHA512 hmac = new HMACSHA512(passSalt))
             {
                byte[] computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
                 return computeHash.SequenceEqual(passHash);
