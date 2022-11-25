@@ -46,6 +46,14 @@ namespace LaBestiaNet.Migrations
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("PassHash")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<byte[]>("PassSalt")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

@@ -4,8 +4,9 @@ using LaBestiaNet.Services.UserService;
 using Microsoft.AspNetCore.Mvc;
 namespace LaBestiaNet.Controller
 {
-    [ApiController]
     [Route("api/")]
+    [ApiController]
+ 
     public class UserController : ControllerBase
     {
         public IUserService service { get; }
@@ -28,20 +29,6 @@ namespace LaBestiaNet.Controller
                 return BadRequest(res);
             }
             
-        }
-
-        [HttpPost("user/add")]
-        public async Task<ActionResult<ServiceResponse<User>>> addUser(User user)
-        {
-            ServiceResponse<User> res = await service.addUser(user);
-            if (res.ok)
-            {
-                return Ok(res);
-            }
-            else
-            {
-                return BadRequest(res);
-            }
         }
         [HttpPost("user/filter")]
         public async Task<ActionResult<ServiceResponse<List<GetUser>>>> filterUser(UserPreferences filter)

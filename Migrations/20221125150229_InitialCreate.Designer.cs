@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LaBestiaNet.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221122152214_userUpdate2")]
-    partial class userUpdate2
+    [Migration("20221125150229_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,11 +49,11 @@ namespace LaBestiaNet.Migrations
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("PasswordHash")
+                    b.Property<byte[]>("PassHash")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<byte[]>("PasswordSalt")
+                    b.Property<byte[]>("PassSalt")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 

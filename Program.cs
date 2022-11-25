@@ -1,4 +1,5 @@
 using LaBestiaNet.Data;
+using LaBestiaNet.Services.AuthService;
 using LaBestiaNet.Services.UserService;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,9 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IAuthService, AuthService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

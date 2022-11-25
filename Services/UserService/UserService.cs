@@ -20,19 +20,6 @@ namespace LaBestiaNet.Services.UserService
         }
 
 
-        public async Task<ServiceResponse<User>> addUser(User user)
-        {
-            try
-            {
-                await context.Users.AddAsync(user);
-                await context.SaveChangesAsync();
-                return new ServiceResponse<User>(true, user, "Done");
-            }catch(Exception ex)
-            {
-                return new ServiceResponse<User>(false, null, ex.Message);
-            }
-        }
-
         public async  Task<ServiceResponse<List<GetUser>>> getCompatibleUsers(UserPreferences filter)
         {
             try
@@ -54,16 +41,6 @@ namespace LaBestiaNet.Services.UserService
             }
 
          
-        }
-
-        public Task<ServiceResponse<User>> getUserByEmail(string email)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ServiceResponse<User>> getUserByName()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<ServiceResponse<List<User>>> getUsers()

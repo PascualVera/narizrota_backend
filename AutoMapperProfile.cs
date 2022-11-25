@@ -9,6 +9,7 @@ namespace LaBestiaNet
         public AutoMapperProfile()
         {
             CreateMap<User, GetUser>();
+            CreateMap<UserRegister, User>();
         }
     }
 }
